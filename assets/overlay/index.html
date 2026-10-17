@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Screensaver Overlay</title>
+<style>
+  @font-face {
+    font-family: 'bw_font';
+    src: url('BwModelica-HairlineExpanded.otf') format('truetype');
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    background: #000;
+    overflow: hidden;
+  }
+  body {
+    color: #fff;
+    font-family: 'bw_font', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+  #overlay {
+    --muted: #757575;
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+  }
+  .background-image, .background-scrim {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+  .background-image {
+    z-index: 0;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    opacity: 0;
+    transition: opacity 0.8s ease;
+  }
+  .background-scrim {
+    z-index: 1;
+    background: rgba(0, 0, 0, 0.42);
+    opacity: 0;
+    transition: opacity 0.8s ease;
+  }
+  #overlay.has-background .background-image.is-active,
+  #overlay.has-background .background-scrim { opacity: 1; }
+  #overlay.has-background { --muted: #bdbdbd; }
+  .screen {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-areas:
+      ". icon icon now_icon alert"
+      ". . . temp ."
+      ". date . cal-event ."
+      "tline tline tline tline tline";
+    grid-template-columns: 7vw auto auto auto 1vw;
+    grid-template-rows: auto auto 1fr auto;
+    padding: 30px;
+  }
+  .status-icons {
+    grid-area: icon;
+    margin-top: 4vh;
+    display: flex;
+    gap: 8px;
+  }
+  .status-icons .marker {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--muted);
+  }
+  .cg-alert {
+    grid-area: alert;
+    align-self: start;
+    justify-self: end;
+    width: 14px;
+    height: 14px;
+    margin-top: 4vh;
+    border-radius: 50%;
+    background: #f44336;
+    box-shadow: 0 0 10px rgba(244, 67, 54, 0.9);
+  }
+  .weather-description {
+    grid-area: icon;
+    align-self: start;
+    justify-self: start;
+    margin-top: 9vh;
+    max-width: 44vw;
+    color: #fff;
+    font-size: var(--description-size, 1.8vh);
+    line-height: 1.65;
+    white-space: pre-wrap;
+  }
+  .weather-icon {
+    grid-area: now_icon;
+    justify-self: end;
+    width: var(--icon-size, 27vw);
+    height: 100%;
+  }
+  .weather-icon img { width: 100%; height: auto; }
+  .temperatures {
+    grid-area: temp;
+    justify-self: end;
+    color: var(--muted);
+  }
+  .temperature-svg {
+    display: block;
+    height: 7vh;
+    width: auto;
+    overflow: visible;
+  }
+  .temperature-home, .temperature-text { fill: var(--muted); }
+  .temperature-text { font-size: 165px; font-weight: 700; }
+  .ext-temp {
+    font-size: 4vh;
+    font-weight: 700;
+    color: var(--muted);
+    text-align: right;
+  }
+  .clock {
+    grid-area: date;
+    align-self: end;
+    justify-self: start;
+    color: #fff;
+  }
+  .time, .date { text-align: center; line-height: 1; }
+  .time { font-size: 13vw; white-space: nowrap; }
+  .date { font-size: 4.5vw; display: flex; justify-content: space-between; }
+  .info {
+    grid-area: cal-event;
+    align-self: end;
+    justify-self: end;
+    text-align: right;
+    line-height: 1;
+  }
+  .info .switch-note { font-size: var(--info-secondary-size, 1.7vh); color: var(--muted); margin-bottom: 1vh; }
+  #entityState {
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    line-height: 1;
+  }
+  .entity {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    margin-top: 1vh;
+  }
+  .friendly-name {
+    display: flex;
+    justify-content: flex-end;
+    color: var(--muted);
+    font-size: var(--info-secondary-size, 1.7vh);
+  }
+  .value {
+    display: flex;
+    color: #fff;
+    font-size: var(--info-size, 2vh);
+    margin-top: 0.5vh;
+    justify-content: flex-end;
+  }
+  .state { margin-left: auto; margin-right: 4px; }
+  .unit { color: var(--muted); font-style: italic; }
+  .events {
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    color: #fff;
+    line-height: 1;
+  }
+  .event { margin-bottom: 10px; text-align: right; }
+  .event-title { margin-top: 1vh; color: #fff; font-size: var(--info-size, 2vh); }
+  .event-time { color: var(--muted); font-size: var(--info-secondary-size, 1.7vh); }
+  .no-events { color: #999; font-style: italic; text-align: right; }
+  .forecast {
+    grid-area: tline;
+    margin-top: 7vh;
+    position: relative;
+    z-index: 0;
+  }
+  .forecast::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 -8px 0;
+    background: rgba(0, 0, 0, var(--forecast-opacity, 0.7));
+    z-index: -1;
+  }
+  .gradient-bar {
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(to right, black, #4d4d4d, black);
+    position: relative;
+    top: 60px;
+  }
+  .timeline {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    justify-content: space-between;
+    height: auto;
+  }
+  .timeline-item {
+    flex: 0 0 auto;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .condition { height: 72px; }
+  .condition img { width: 58px; height: 58px; }
+  .details { font-size: 1.3em; color: var(--muted); }
+  .details .hour { font-weight: bold; }
+  .details .temperature { color: #e0e0e0; }
+  .details .temperature.cold { color: #1976d2; }
+  .details .temperature.cool { color: #64b5f6; }
+  .details .temperature.warm { color: #ff9800; }
+  .details .temperature.hot { color: #f44336; }
+  .details .precipitation { color: #9e9e9e; font-size: 1.15em; }
+</style>
+</head>
+<body>
+<div id="overlay">
+  <div class="background-image"></div>
+  <div class="background-image"></div>
+  <div class="background-scrim"></div>
+  <div class="screen"></div>
+</div>
+<script src="renderer.js"></script>
+</body>
+</html>

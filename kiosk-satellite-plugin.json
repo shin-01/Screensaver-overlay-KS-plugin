@@ -1,0 +1,241 @@
+{
+  "schemaVersion": 1,
+  "id": "screensaver-overlay",
+  "name": "Screensaver Overlay",
+  "version": "0.1.0",
+  "apiVersion": 1,
+  "minAndroidSdk": 24,
+  "entryClass": "me.jxl.kiosk.plugins.screensaveroverlay.ScreensaverOverlayPlugin",
+  "description": "An information screensaver with clock, weather, hourly forecast, temperatures, calendar events, sensor values and status icons, styled after the Screensaver Overlay Home Assistant integration. Kiosk Satellite still owns idle activation, dismissal, brightness and wake behavior.",
+  "author": "Screensaver Overlay contributors",
+  "license": "Apache-2.0",
+  "capabilities": [
+    "screensaver",
+    "host.read",
+    "ha",
+    "entities"
+  ],
+  "settings": [
+    {
+      "key": "weatherEntity",
+      "type": "entity",
+      "title": "Weather entity",
+      "default": "",
+      "group": "Weather",
+      "description": "Main weather entity, for example weather.home. Powers the weather icon, outside temperature and hourly forecast."
+    },
+    {
+      "key": "weatherDescriptionEntity",
+      "type": "entity",
+      "title": "Weather description entity",
+      "default": "",
+      "group": "Weather",
+      "description": "Optional sensor whose state is shown as text under the weather icon."
+    },
+    {
+      "key": "showWeatherIcon",
+      "type": "boolean",
+      "title": "Show weather icon",
+      "default": true,
+      "group": "Weather"
+    },
+    {
+      "key": "weatherIconSize",
+      "type": "number",
+      "title": "Weather icon size",
+      "default": 27,
+      "min": 5,
+      "max": 60,
+      "step": 1,
+      "unit": "vw",
+      "group": "Weather"
+    },
+    {
+      "key": "showHourlyForecast",
+      "type": "boolean",
+      "title": "Show hourly forecast",
+      "default": true,
+      "group": "Weather"
+    },
+    {
+      "key": "hourlyForecastBackgroundOpacity",
+      "type": "number",
+      "title": "Hourly forecast background opacity",
+      "default": 70,
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "group": "Weather"
+    },
+    {
+      "key": "externalTemperatureEntity",
+      "type": "entity",
+      "title": "External temperature entity",
+      "default": "",
+      "group": "Temperatures",
+      "description": "Optional sensor that overrides the weather entity temperature."
+    },
+    {
+      "key": "internalTemperatureEntity",
+      "type": "entity",
+      "title": "Internal temperature entity",
+      "default": "",
+      "group": "Temperatures",
+      "description": "Optional sensor shown together with the external temperature in the house layout."
+    },
+    {
+      "key": "showTemperatures",
+      "type": "boolean",
+      "title": "Show temperatures",
+      "default": true,
+      "group": "Temperatures"
+    },
+    {
+      "key": "rainSensorEntity",
+      "type": "entity",
+      "title": "Rain sensor",
+      "default": "",
+      "group": "Weather",
+      "description": "Optional binary sensor. When its state is raining, the animated rain icon is used."
+    },
+    {
+      "key": "calendarEntities",
+      "type": "list",
+      "title": "Calendars",
+      "default": [],
+      "group": "Info",
+      "addTitle": "Add calendar",
+      "maxItems": 6,
+      "description": "Calendar entities for upcoming events. Events for the next 7 days are refreshed every 5 minutes.",
+      "row": {
+        "title": "entity"
+      },
+      "fields": [
+        {
+          "key": "entity",
+          "type": "entity",
+          "title": "Calendar entity",
+          "required": true
+        }
+      ]
+    },
+    {
+      "key": "valueEntities",
+      "type": "list",
+      "title": "Value entities",
+      "default": [],
+      "group": "Info",
+      "addTitle": "Add value",
+      "maxItems": 6,
+      "description": "Entities whose friendly name, state and unit are listed as values. When calendars are also configured, values and events alternate.",
+      "row": {
+        "title": "entity"
+      },
+      "fields": [
+        {
+          "key": "entity",
+          "type": "entity",
+          "title": "Entity",
+          "required": true
+        }
+      ]
+    },
+    {
+      "key": "statusIconEntities",
+      "type": "list",
+      "title": "Status icon entities",
+      "default": [],
+      "group": "Info",
+      "addTitle": "Add status icon",
+      "maxItems": 4,
+      "description": "Entities shown as markers only while they are active, such as on, open or playing.",
+      "row": {
+        "title": "entity",
+        "subtitle": [
+          "icon"
+        ]
+      },
+      "fields": [
+        {
+          "key": "entity",
+          "type": "entity",
+          "title": "Entity",
+          "required": true
+        },
+        {
+          "key": "icon",
+          "type": "icon",
+          "title": "Icon",
+          "description": "Optional custom Material Design Icon, for example mdi:lightbulb."
+        }
+      ]
+    },
+    {
+      "key": "showInfo",
+      "type": "boolean",
+      "title": "Show info block",
+      "default": true,
+      "group": "Info"
+    },
+    {
+      "key": "infoTextSize",
+      "type": "number",
+      "title": "Info text size",
+      "default": 2.0,
+      "min": 0.5,
+      "max": 8,
+      "step": 0.1,
+      "unit": "vh",
+      "group": "Info"
+    },
+    {
+      "key": "infoItemsLimit",
+      "type": "number",
+      "title": "Maximum info items",
+      "default": 5,
+      "min": 1,
+      "max": 12,
+      "step": 1,
+      "group": "Info"
+    },
+    {
+      "key": "showClock",
+      "type": "boolean",
+      "title": "Show clock",
+      "default": true,
+      "group": "Layout"
+    },
+    {
+      "key": "showStatusIcons",
+      "type": "boolean",
+      "title": "Show status icons",
+      "default": true,
+      "group": "Layout"
+    },
+    {
+      "key": "backgroundMode",
+      "type": "select",
+      "title": "Background",
+      "default": "Black",
+      "options": [
+        "Black",
+        "Default images",
+        "Default images carousel"
+      ],
+      "group": "Background",
+      "description": "Black hides images. Default images show the bundled background. The carousel fades between the bundled backgrounds."
+    },
+    {
+      "key": "backgroundCarouselInterval",
+      "type": "number",
+      "title": "Carousel interval",
+      "default": 60,
+      "min": 10,
+      "max": 3600,
+      "step": 10,
+      "unit": "s",
+      "group": "Background"
+    }
+  ]
+}
