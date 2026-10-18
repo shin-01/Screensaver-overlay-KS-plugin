@@ -72,3 +72,21 @@ This plugin reuses the weather icons, font, default backgrounds and visual desig
 weather-mood background is an original canvas animation inspired by Kiosk Satellite's
 Weather Mood screensaver, without copying its application code. The plugin code is
 licensed under Apache-2.0; see [LICENSE](LICENSE).
+
+## Custom background photos
+
+The plugin screensaver WebView only serves files inside the plugin package, so
+personal photos ship inside the plugin ZIP:
+
+1. Resize your photos to about the display resolution (WebP at 75-85 quality is
+   recommended; keep the whole package under 4 MB).
+2. Place up to five of them in `assets/overlay/custom/` in your copy of this
+   repository, using letters, digits, underscores, hyphens and periods in the
+   file names.
+3. Build a release (or ask for the photos to be included in the next one).
+4. After updating the plugin, list the file names, comma separated, in
+   **Custom background files**, for example `livingroom.webp, kitchen.jpg`.
+5. Set **Background** to **Custom images** or **Custom images carousel**.
+
+With more than one photo, the carousel mode fades between them at the carousel
+interval, like the bundled backgrounds.

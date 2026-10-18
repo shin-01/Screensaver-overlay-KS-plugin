@@ -37,6 +37,7 @@ final class OverlayData {
     private double infoTextSize = 2.0;
     private int infoItemsLimit = 5;
     private String backgroundMode = "black";
+    private String customBackgrounds = "";
     private double backgroundCarouselInterval = 60;
 
     // Live state
@@ -80,6 +81,7 @@ final class OverlayData {
         infoItemsLimit = (int) number(settings.get("infoItemsLimit"), 5);
         String mode = text(settings.get("backgroundMode"));
         backgroundMode = mode.isEmpty() ? "black" : mode.toLowerCase().replace(' ', '_');
+        customBackgrounds = text(settings.get("customBackgrounds"));
         backgroundCarouselInterval = number(settings.get("backgroundCarouselInterval"), 60);
     }
 
@@ -177,6 +179,7 @@ final class OverlayData {
         data.put("infoTextSize", infoTextSize);
         data.put("infoItemsLimit", (double) infoItemsLimit);
         data.put("backgroundMode", backgroundMode);
+        data.put("customBackgrounds", customBackgroundsJson());
         data.put("backgroundCarouselInterval", backgroundCarouselInterval);
         data.put("weatherCondition", weatherCondition);
         data.put("weatherTemperature", weatherTemperature);
@@ -192,6 +195,24 @@ final class OverlayData {
         data.put("valueEntities", join(valueEntities, valueStates, valueNames, valueUnits));
         data.put("statusIcons", statusIconsJson());
         return data;
+    }
+
+    /** Up to five photo file names from the custom background setting, relative to assets/overlay/. */
+    private String customBackgroundsJson() {
+        boolean custom = backgroundMode.contains("custom");
+        if (!custom || customBackgrounds.isEmpty()) return "[]";
+        StringBuilder json = new StringBuilder("[");
+        int count = 0;
+        for (String token : customBackgrounds.split(",")) {
+            String name = token.trim();
+            if (name.isEmpty() || !name.matches("[a-zA-Z0-9][a-zA-Z0-9_.-]{0,127}")
+                    || name.equals(".") || name.equals("..")) continue;
+            if (count >= 5) break;
+            if (count > 0) json.append(',');
+            json.append(quote("custom/" + name));
+            count++;
+        }
+        return json.append(']').toString();
     }
 
     private String join(List<String> entities, Map<String, String> states,

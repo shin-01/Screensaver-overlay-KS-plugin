@@ -154,6 +154,22 @@ public final class ScreensaverOverlayTest {
         await(host, screensaver -> "weather_mood".equals(screensaver.get("backgroundMode")));
         assert host.publications > beforeMood : "mood background change must republish";
 
+        Map<String, Object> custom = settings();
+        custom.put("backgroundMode", "Custom images carousel");
+        custom.put("customBackgrounds", "livingroom.webp, kitchen.jpg, ../secrets.txt, .hidden, "
+                + String.join(",", java.util.Collections.nCopies(6, "extra" + ".webp")));
+        int beforeCustom = host.publications;
+        plugin.configure(custom);
+        await(host, screensaver -> "custom_images_carousel".equals(screensaver.get("backgroundMode")));
+        assert host.publications > beforeCustom : "custom background change must republish";
+        String customJson = String.valueOf(host.screensaver.get("customBackgrounds"));
+        assert customJson.contains("custom/livingroom.webp") : customJson;
+        assert customJson.contains("custom/kitchen.jpg") : customJson;
+        assert !customJson.contains("secrets") : customJson;
+        assert !customJson.contains("hidden") : customJson;
+        int commas = customJson.length() - customJson.replace(",", "").length();
+        assert customJson.equals("[]") || commas <= 4 : "at most five custom backgrounds: " + customJson;
+
         Map<String, Object> published = new HashMap<>(host.screensaver);
         Map<String, Object> next = settings();
         next.put("backgroundMode", "Black");

@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "id": "screensaver-overlay",
   "name": "Screensaver Overlay",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "apiVersion": 1,
   "minAndroidSdk": 24,
   "entryClass": "me.jxl.kiosk.plugins.screensaveroverlay.ScreensaverOverlayPlugin",
@@ -238,10 +238,20 @@
         "Black",
         "Default images",
         "Default images carousel",
+        "Custom images",
+        "Custom images carousel",
         "Weather mood"
       ],
       "group": "Background",
-      "description": "Black hides images. Default images show the bundled background. The carousel fades between the bundled backgrounds."
+      "description": "Black hides images. Default images show the bundled background. Custom images use up to five photos placed in assets/overlay/custom/ inside the plugin package (see the README). Weather mood paints an animated canvas sky."
+    },
+    {
+      "key": "customBackgrounds",
+      "type": "string",
+      "title": "Custom background files",
+      "default": "",
+      "group": "Background",
+      "description": "Comma-separated photo file names inside assets/overlay/custom/, at most five. Example: livingroom.webp, kitchen.jpg"
     },
     {
       "key": "backgroundCarouselInterval",

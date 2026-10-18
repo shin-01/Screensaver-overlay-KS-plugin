@@ -236,6 +236,11 @@
   var backgroundImages = function () {
     if (isMoodBackground()) return [];
     var mode = String(options.backgroundMode || "black");
+    if (mode.indexOf("custom") !== -1) {
+      var custom = [];
+      try { custom = JSON.parse(options.customBackgrounds || "[]") || []; } catch (error) { custom = []; }
+      return custom.length ? custom : [];
+    }
     if (mode.indexOf("image") === -1 && mode.indexOf("carousel") === -1) return [];
     return DEFAULT_BACKGROUNDS;
   };
