@@ -79,6 +79,8 @@ public final class ScreensaverOverlayTest {
         settings.put("showInfo", true);
         settings.put("showClock", true);
         settings.put("showStatusIcons", true);
+        settings.put("withAtAGlance", false);
+        settings.put("withCornerWidgets", false);
         settings.put("weatherIconSize", 27.0);
         settings.put("hourlyForecastBackgroundOpacity", 70.0);
         settings.put("infoTextSize", 2.0);
@@ -133,6 +135,17 @@ public final class ScreensaverOverlayTest {
         assert String.valueOf(host.screensaver.get("calendarEvents")).contains("Dinner");
         assert String.valueOf(host.screensaver.get("valueEntities")).contains("Test");
         assert String.valueOf(host.screensaver.get("statusIcons")).contains("\"icon\"");
+        assert Boolean.FALSE.equals(host.screensaver.get("withAtAGlance"));
+        assert Boolean.FALSE.equals(host.screensaver.get("withCornerWidgets"));
+
+        Map<String, Object> glance = settings();
+        glance.put("withAtAGlance", true);
+        glance.put("withCornerWidgets", true);
+        int beforeGlance = host.publications;
+        plugin.configure(glance);
+        await(host, screensaver -> Boolean.TRUE.equals(screensaver.get("withAtAGlance"))
+                && Boolean.TRUE.equals(screensaver.get("withCornerWidgets")));
+        assert host.publications > beforeGlance : "glance layout change must republish";
 
         Map<String, Object> published = new HashMap<>(host.screensaver);
         Map<String, Object> next = settings();

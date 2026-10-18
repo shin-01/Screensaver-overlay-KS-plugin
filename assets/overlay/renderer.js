@@ -283,6 +283,8 @@
     }
   };
 
+  if (options.withAtAGlance) overlay.classList.add("with-glance");
+  if (options.withCornerWidgets) overlay.classList.add("with-corners");
   render();
   startBackgroundCarousel();
   startTimers();

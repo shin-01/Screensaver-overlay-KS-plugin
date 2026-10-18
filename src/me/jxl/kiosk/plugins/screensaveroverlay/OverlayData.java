@@ -29,6 +29,8 @@ final class OverlayData {
     private boolean showInfo = true;
     private boolean showClock = true;
     private boolean showStatusIcons = true;
+    private boolean withAtAGlance = false;
+    private boolean withCornerWidgets = false;
     private double weatherIconSize = 27;
     private double weatherDescriptionTextSize = 1.8;
     private double hourlyForecastBackgroundOpacity = 70;
@@ -70,6 +72,8 @@ final class OverlayData {
         showInfo = Boolean.TRUE.equals(settings.get("showInfo"));
         showClock = Boolean.TRUE.equals(settings.get("showClock"));
         showStatusIcons = Boolean.TRUE.equals(settings.get("showStatusIcons"));
+        withAtAGlance = Boolean.TRUE.equals(settings.get("withAtAGlance"));
+        withCornerWidgets = Boolean.TRUE.equals(settings.get("withCornerWidgets"));
         weatherIconSize = number(settings.get("weatherIconSize"), 27);
         hourlyForecastBackgroundOpacity = number(settings.get("hourlyForecastBackgroundOpacity"), 70);
         infoTextSize = number(settings.get("infoTextSize"), 2.0);
@@ -165,6 +169,8 @@ final class OverlayData {
         data.put("showInfo", showInfo);
         data.put("showClock", showClock);
         data.put("showStatusIcons", showStatusIcons);
+        data.put("withAtAGlance", withAtAGlance);
+        data.put("withCornerWidgets", withCornerWidgets);
         data.put("weatherIconSize", weatherIconSize);
         data.put("weatherDescriptionTextSize", weatherDescriptionTextSize);
         data.put("hourlyForecastBackgroundOpacity", hourlyForecastBackgroundOpacity / 100.0);

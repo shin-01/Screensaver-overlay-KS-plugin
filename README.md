@@ -34,6 +34,7 @@ All settings are global for this kiosk and save automatically:
 | Info | Calendars, value entities, status icon entities | Content lists |
 | Info | Show info block, info text size, maximum info items | Layout of the info block |
 | Layout | Show clock, show status icons | Block visibility |
+| Layout | At a Glance row is visible, Corner widgets are visible | Turn these on to match the stock screensaver extras: with At a Glance the info block moves up and the hourly forecast sits higher so nothing hides under the bottom row; with corner widgets the status icons, weather description and alert dot move below the widget line |
 | Background | Black / Default images / Default images carousel, carousel interval | Background behavior |
 
 Entity states update live through Kiosk Satellite's Home Assistant connection. Calendar events
