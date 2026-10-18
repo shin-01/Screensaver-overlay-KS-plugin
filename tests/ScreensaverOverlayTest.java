@@ -147,6 +147,13 @@ public final class ScreensaverOverlayTest {
                 && Boolean.TRUE.equals(screensaver.get("withCornerWidgets")));
         assert host.publications > beforeGlance : "glance layout change must republish";
 
+        Map<String, Object> mood = settings();
+        mood.put("backgroundMode", "Weather mood");
+        int beforeMood = host.publications;
+        plugin.configure(mood);
+        await(host, screensaver -> "weather_mood".equals(screensaver.get("backgroundMode")));
+        assert host.publications > beforeMood : "mood background change must republish";
+
         Map<String, Object> published = new HashMap<>(host.screensaver);
         Map<String, Object> next = settings();
         next.put("backgroundMode", "Black");

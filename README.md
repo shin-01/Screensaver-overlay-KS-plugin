@@ -4,7 +4,7 @@ A [Kiosk Satellite](https://github.com/jxlarrea/kiosk-satellite) plugin that por
 options of the [Screensaver Overlay](https://github.com/madmicio/screensaver_overlay) Home
 Assistant integration into a Kiosk Satellite screensaver renderer.
 
-The screensaver shows, on a black or image background:
+The screensaver shows, on a black, image or animated weather-mood background:
 
 - clock with weekday and date
 - current weather icon with an optional textual description
@@ -35,7 +35,7 @@ All settings are global for this kiosk and save automatically:
 | Info | Show info block, info text size, maximum info items | Layout of the info block |
 | Layout | Show clock, show status icons | Block visibility |
 | Layout | At a Glance row is visible, Corner widgets are visible | Turn these on to match the stock screensaver extras: with At a Glance the info block moves up and the hourly forecast sits higher so nothing hides under the bottom row; with corner widgets the status icons, weather description and alert dot move below the widget line |
-| Background | Black / Default images / Default images carousel, carousel interval | Background behavior |
+| Background | Black / Default images / Default images carousel / Weather mood, carousel interval | Background behavior. Weather mood paints an animated canvas sky following the current condition, day/night and the rain sensor |
 
 Entity states update live through Kiosk Satellite's Home Assistant connection. Calendar events
 refresh every 5 minutes; the hourly forecast follows Home Assistant's forecast subscription.
@@ -68,5 +68,7 @@ published release tag.
 ## Credits
 
 This plugin reuses the weather icons, font, default backgrounds and visual design of
-[madmicio/screensaver_overlay](https://github.com/madmicio/screensaver_overlay). The plugin
-code is licensed under Apache-2.0; see [LICENSE](LICENSE).
+[madmicio/screensaver_overlay](https://github.com/madmicio/screensaver_overlay). The
+weather-mood background is an original canvas animation inspired by Kiosk Satellite's
+Weather Mood screensaver, without copying its application code. The plugin code is
+licensed under Apache-2.0; see [LICENSE](LICENSE).

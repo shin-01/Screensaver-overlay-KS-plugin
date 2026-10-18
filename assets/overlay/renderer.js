@@ -229,10 +229,25 @@
     if (timeElement) timeElement.textContent = formatTime(new Date());
   };
 
+  var isMoodBackground = function () {
+    return String(options.backgroundMode || "").indexOf("mood") !== -1;
+  };
+
   var backgroundImages = function () {
+    if (isMoodBackground()) return [];
     var mode = String(options.backgroundMode || "black");
     if (mode.indexOf("image") === -1 && mode.indexOf("carousel") === -1) return [];
     return DEFAULT_BACKGROUNDS;
+  };
+
+  var startWeatherMood = function () {
+    if (!isMoodBackground() || !window.ScreensaverOverlayWeatherMood) return;
+    overlay.classList.add("with-mood");
+    var canvas = document.getElementById("weather-mood");
+    if (!canvas || !canvas.getContext) return;
+    var mood = new window.ScreensaverOverlayWeatherMood(canvas, options);
+    mood.start();
+    window.addEventListener("resize", function () { mood.resize(); });
   };
 
   var setBackground = function () {
@@ -287,6 +302,7 @@
   if (options.withCornerWidgets) overlay.classList.add("with-corners");
   render();
   startBackgroundCarousel();
+  startWeatherMood();
   startTimers();
 
   window.addEventListener("resize", function () {

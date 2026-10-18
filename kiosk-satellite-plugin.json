@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "id": "screensaver-overlay",
   "name": "Screensaver Overlay",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "apiVersion": 1,
   "minAndroidSdk": 24,
   "entryClass": "me.jxl.kiosk.plugins.screensaveroverlay.ScreensaverOverlayPlugin",
@@ -237,7 +237,8 @@
       "options": [
         "Black",
         "Default images",
-        "Default images carousel"
+        "Default images carousel",
+        "Weather mood"
       ],
       "group": "Background",
       "description": "Black hides images. Default images show the bundled background. The carousel fades between the bundled backgrounds."
