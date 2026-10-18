@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "id": "screensaver-overlay",
   "name": "Screensaver Overlay",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "apiVersion": 1,
   "minAndroidSdk": 24,
   "entryClass": "me.jxl.kiosk.plugins.screensaveroverlay.ScreensaverOverlayPlugin",
@@ -19,6 +19,7 @@
     {
       "key": "weatherEntity",
       "type": "entity",
+      "domain": "weather",
       "title": "Weather entity",
       "default": "",
       "group": "Weather",
@@ -27,6 +28,7 @@
     {
       "key": "weatherDescriptionEntity",
       "type": "entity",
+      "domain": "sensor",
       "title": "Weather description entity",
       "default": "",
       "group": "Weather",
@@ -71,6 +73,7 @@
     {
       "key": "externalTemperatureEntity",
       "type": "entity",
+      "domain": "sensor",
       "title": "External temperature entity",
       "default": "",
       "group": "Temperatures",
@@ -79,6 +82,7 @@
     {
       "key": "internalTemperatureEntity",
       "type": "entity",
+      "domain": "sensor",
       "title": "Internal temperature entity",
       "default": "",
       "group": "Temperatures",
@@ -94,6 +98,7 @@
     {
       "key": "rainSensorEntity",
       "type": "entity",
+      "domain": "binary_sensor",
       "title": "Rain sensor",
       "default": "",
       "group": "Weather",
@@ -115,6 +120,7 @@
         {
           "key": "entity",
           "type": "entity",
+          "domain": "calendar",
           "title": "Calendar entity",
           "required": true
         }
@@ -137,7 +143,8 @@
           "key": "entity",
           "type": "entity",
           "title": "Entity",
-          "required": true
+          "required": true,
+          "domain": "sensor"
         }
       ]
     },
